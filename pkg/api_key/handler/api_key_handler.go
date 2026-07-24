@@ -142,6 +142,7 @@ func (h *apiKeyHandler) Create(c *gin.Context) {
 		Name:     req.Name,
 		Provider: req.Provider,
 		Key:      encryptedKey,
+		BaseURL:  req.BaseURL,
 	}
 
 	createdApiKey, err := h.apiKeyService.Create(c.Request.Context(), apiKey)
@@ -262,6 +263,7 @@ func (h *apiKeyHandler) Update(c *gin.Context) {
 		Name:     req.Name,
 		Provider: req.Provider,
 		Key:      encryptedKey,
+		BaseURL:  req.BaseURL,
 	}
 
 	updatedApiKey, err := h.apiKeyService.Update(c.Request.Context(), apiKey, id)

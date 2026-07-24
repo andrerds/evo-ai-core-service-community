@@ -15,6 +15,7 @@ type ApiKey struct {
 	Name      string    `json:"-" gorm:"not null; type:varchar(255)"`
 	Provider  string    `json:"-" gorm:"not null; type:varchar(255)"`
 	Key       string    `json:"-" gorm:"not null; type:text"`
+	BaseURL   string    `json:"-" gorm:"type:text"`
 	IsActive  bool      `json:"-" gorm:"not null; type:boolean;default:true"`
 	CreatedAt time.Time `json:"-" gorm:"autoCreateTime;not null" default:"now()"`
 	UpdatedAt time.Time `json:"-" gorm:"autoUpdateTime;not null" default:"now()"`
@@ -35,6 +36,7 @@ type ApiKeyRequest struct {
 	Provider string `json:"provider" binding:"required"`
 	Key      string `json:"key"`       // Backend format
 	KeyValue string `json:"key_value"` // Frontend format
+	BaseURL  string `json:"base_url"`  // Required for custom OpenAI-compatible providers
 }
 
 // GetKey returns the key, prioritizing key_value (frontend) over key (backend)
@@ -50,6 +52,7 @@ type ApiKeyUpdateRequest struct {
 	Provider string `json:"provider" binding:"required"`
 	Key      string `json:"key"`       // Backend format
 	KeyValue string `json:"key_value"` // Frontend format
+	BaseURL  string `json:"base_url"`  // Required for custom OpenAI-compatible providers
 }
 
 // GetKey returns the key, prioritizing key_value (frontend) over key (backend)
@@ -65,6 +68,7 @@ type ApiKeyResponse struct {
 	Name      string    `json:"name"`
 	Provider  string    `json:"provider"`
 	Key       string    `json:"key"`
+	BaseURL   string    `json:"base_url,omitempty"`
 	IsActive  bool      `json:"is_active"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
@@ -92,6 +96,7 @@ func (u *ApiKey) ToResponse() *ApiKeyResponse {
 		Name:      u.Name,
 		Provider:  u.Provider,
 		Key:       u.Key,
+		BaseURL:   u.BaseURL,
 		IsActive:  u.IsActive,
 		CreatedAt: u.CreatedAt,
 		UpdatedAt: u.UpdatedAt,
